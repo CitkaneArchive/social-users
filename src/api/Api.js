@@ -1,24 +1,25 @@
 /* eslint-disable no-useless-constructor */
 /* eslint-disable class-methods-use-this */
 const uniqid = require('uniqid');
-const BaseApi = require('./BaseApi');
+const BaseApi = require('@social/social-deployment/templates/nodejs/api/BaseApi');
 
 class Api extends BaseApi {
-    constructor(subscriber, publish) {
-        super(subscriber, publish);
+    constructor(sockets) {
+        super();
+        this.sockets = sockets;
+        this.ownerId = null;
     }
 
-    createNewUser(ownerId, user) {
+    createNewUser(user, ownerId = null) {
         const newUser = user;
         newUser.uid = uniqid();
-        const socket = this.getReqSocket('persistance');
-        return socket.send(ownerId, 'create', 'newUser', [newUser])
+        console.log(newUser);
+        return this.api.create('persistance.saveUser', newUser, ownerId)
             .then((response) => {
-                this.publish('users.newUser', JSON.stringify(response));
-                console.log('got the response');
+                console.log(response);
+                this.sockets.publish('users.newUser', JSON.stringify(response));
                 return response;
-            })
-            .catch(err => Promise.reject(err));
+            });
     }
 }
 

@@ -1,24 +1,26 @@
 /* eslint-disable prefer-promise-reject-errors */
 
+const Sockets = require('@social/social-deployment/templates/nodejs/api/Sockets');
 const Api = require('./src/api/Api');
-const { makeResponder, subscriber, publish } = require('./src/api/interface');
 
-subscriber.subscribe('users.refreshCache');
-subscriber.on('message', (topic, message) => {
+const sockets = new Sockets('users');
+sockets.subscribe('users.refreshCache');
+sockets.subscriber.on('message', (topic, message) => {
     console.log('received a message related to:', topic.toString(), 'containing message:', message.toString());
 });
-
-const api = new Api(subscriber, publish);
+setTimeout(() => {
+    sockets.publish('users.newUser', 'testing pubsub');
+}, 5000);
+const api = new Api(sockets);
 
 const apiInterface = {
     create: {
-        newUser: (ownerId, args) => api.createNewUser(ownerId, ...args)
+        newUser: request => api.createNewUser(request.args[0], request.ownerId)
             .then(payload => ({ status: 201, payload }))
-            .catch(err => Promise.reject({ status: err.status || 500, message: err.message }))
     },
     read: {},
     update: {},
     delete: {}
 };
 
-makeResponder(apiInterface);
+sockets.makeResponder(apiInterface);
