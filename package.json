@@ -10,6 +10,7 @@
   "license": "UNLICENSED",
   "dependencies": {
     "@social/social-deployment": "git+https://git@github.com/citkane/social-deployment.git",
+    "uniqid": "^5.0.3",
     "zmq": "^2.15.3"
   },
   "devDependencies": {
