@@ -16,17 +16,18 @@ const api = new Api(sockets);
 const apiInterface = {
     create: {
         user: request => api.createNewUser(request.args[0], request.ownerId)
-            .then((payload) => {
-                sockets.publish('users.user-created', payload);
-                return { status: 201, payload };
+            .then((response) => {
+                sockets.publish('users.user-created', response.payload);
+                return response;
             })
+            .catch(err => err)
     },
     read: {
-        users: request => api.getAllUsers(request.ownerId)
-            .then(payload => ({ status: 200, payload })),
+        users: request => api.getReqSocket('persistance').proxy(request),
 
-        user: request => api.getUserById(request.args[0], request.ownerId)
-            .then(payload => ({ status: 200, payload }))
+        user: request => api.getReqSocket('persistance').proxy(request),
+
+        userByName: request => api.getReqSocket('persistance').proxy(request)
     },
     update: {
         user: request => api.updateUser(request.args[0], request.ownerId)
