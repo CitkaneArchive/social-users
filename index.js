@@ -4,13 +4,6 @@ const Sockets = require('../social-deployment/templates/nodejs/api/Sockets');
 const Api = require('./src/api/Api');
 
 const sockets = new Sockets('users');
-sockets.subscribe('users.refreshCache');
-sockets.subscriber.on('message', (topic, message) => {
-    console.log('received a message related to:', topic.toString(), 'containing message:', message.toString());
-});
-setTimeout(() => {
-    sockets.publish('users.newUser', 'testing pubsub');
-}, 5000);
 const api = new Api(sockets);
 
 const apiInterface = {
@@ -30,18 +23,20 @@ const apiInterface = {
         userByName: request => api.getReqSocket('persistance').proxy(request)
     },
     update: {
-        user: request => api.updateUser(request.args[0], request.ownerId)
-            .then((payload) => {
-                sockets.publish('users.user-updated', payload);
-                return { status: 200, payload };
+        user: request => api.getReqSocket('persistance').proxy(request)
+            .then((response) => {
+                sockets.publish('users.user-updated', response.payload);
+                return response;
             })
+            .catch(err => err)
     },
     delete: {
-        user: request => api.deleteUser(request.args[0], request.ownerId)
-            .then((payload) => {
-                sockets.publish('users.user-deleted', payload);
-                return { status: 200, payload };
+        user: request => api.getReqSocket('persistance').proxy(request)
+            .then((response) => {
+                sockets.publish('users.user-deleted', response.payload);
+                return response;
             })
+            .catch(err => err)
     }
 };
 
