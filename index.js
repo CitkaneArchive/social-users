@@ -1,4 +1,7 @@
-/* eslint-disable prefer-promise-reject-errors */
+const config = require('config');
+
+// eslint-disable-next-line no-underscore-dangle
+global.__network = config.get('network');
 
 const Sockets = require('../social-deployment/templates/nodejs/api/Sockets');
 const Api = require('./src/api/Api');
