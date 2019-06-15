@@ -1,13 +1,9 @@
-/* eslint-disable no-useless-constructor */
-/* eslint-disable class-methods-use-this */
 const uniqid = require('uniqid');
-const BaseApi = require('../../../social-deployment/templates/nodejs/api/BaseApi');
+const Api = require('../../../social-deployment/templates/nodejs/api/Api');
 
-class Api extends BaseApi {
+class ApiUsers extends Api {
     constructor(sockets) {
-        super();
-        this.sockets = sockets;
-        this.ownerId = null;
+        super(sockets, false);
     }
 
     createNewUser(user, ownerId = null) {
@@ -18,4 +14,4 @@ class Api extends BaseApi {
     }
 }
 
-module.exports = Api;
+module.exports = ApiUsers;

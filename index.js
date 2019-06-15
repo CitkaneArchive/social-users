@@ -4,10 +4,10 @@ const config = require('config');
 global.__network = config.get('network');
 
 const Sockets = require('../social-deployment/templates/nodejs/api/Sockets');
-const Api = require('./src/api/Api');
+const ApiUsers = require('./src/api/ApiUsers');
 
 const sockets = new Sockets('users');
-const api = new Api(sockets);
+const api = new ApiUsers(sockets);
 
 const apiInterface = {
     create: {
