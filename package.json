@@ -2,8 +2,9 @@
   "name": "@social/users",
   "version": "0.0.0",
   "description": "Microservice to manage users",
-  "main": "index.js",
+  "main": "./src/users.js",
   "scripts": {
+    "start": "node ./src/users.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Michael Jonker",

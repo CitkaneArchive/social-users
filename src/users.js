@@ -3,8 +3,8 @@ const config = require('config');
 // eslint-disable-next-line no-underscore-dangle
 global.__network = config.get('network');
 
-const Sockets = require('../social-deployment/templates/nodejs/api/Sockets');
-const ApiUsers = require('./src/api/ApiUsers');
+const Sockets = require('../../social-deployment/templates/nodejs/api/Sockets');
+const ApiUsers = require('./api/ApiUsers');
 
 const sockets = new Sockets('users');
 const api = new ApiUsers(sockets);
