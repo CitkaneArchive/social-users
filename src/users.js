@@ -3,6 +3,12 @@ const ApiUsers = require('./api/ApiUsers');
 
 const sockets = new Sockets('users');
 const api = new ApiUsers(sockets);
+const bffSubscriptions = [
+    'users.user-updated',
+    'users.user-created',
+    'users.user-deleted'
+];
+sockets.publish('bff.makesubscriptions', bffSubscriptions);
 
 const apiInterface = {
     create: {
@@ -14,6 +20,8 @@ const apiInterface = {
             .catch(err => err)
     },
     read: {
+        bffSubscriptions: () => api.resolve(200, bffSubscriptions),
+
         users: request => api.getReqSocket('persistance').proxy(request),
 
         user: request => api.getReqSocket('persistance').proxy(request),
