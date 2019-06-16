@@ -8,7 +8,7 @@ const apiInterface = {
     create: {
         user: request => api.createNewUser(request.args[0], request.ownerId)
             .then((response) => {
-                sockets.publish('users.user-created', response.payload);
+                api.sockets.publish('users.user-created', response.payload);
                 return response;
             })
             .catch(err => err)
@@ -23,18 +23,16 @@ const apiInterface = {
     update: {
         user: request => api.getReqSocket('persistance').proxy(request)
             .then((response) => {
-                sockets.publish('users.user-updated', response.payload);
+                api.sockets.publish('users.user-updated', response.payload);
                 return response;
             })
-            .catch(err => err)
     },
     delete: {
         user: request => api.getReqSocket('persistance').proxy(request)
             .then((response) => {
-                sockets.publish('users.user-deleted', response.payload);
+                api.sockets.publish('users.user-deleted', response.payload);
                 return response;
             })
-            .catch(err => err)
     }
 };
 
