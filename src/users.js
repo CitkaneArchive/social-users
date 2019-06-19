@@ -1,4 +1,4 @@
-const Sockets = require('../../social-deployment/templates/nodejs/api/Sockets');
+const Sockets = require('./templates/Sockets');
 const ApiUsers = require('./api/ApiUsers');
 
 const sockets = new Sockets('users');
