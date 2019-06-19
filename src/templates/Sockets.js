@@ -56,7 +56,7 @@ class Sockets {
         this.subscriber.unsubscribe(topic);
     }
 
-    /** Create the interface for request/response */
+    /** Create the interface for request/response and pub/sub */
     makeResponder(apiInterface) {
         this.responder.on('message', (...args) => {
             const identity = args[0];

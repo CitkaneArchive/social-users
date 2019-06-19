@@ -88,26 +88,25 @@ class BaseApi {
         /** @namespace module:users.pubsub */
         this.sockets = sockets;
         /**
-         * **Publish a payload to a topic for all subscribed microservices.**
+         * Publish a payload to a topic for all subscribed microservices.
          * @method module:users.pubsub#publish
          * @param {String} topic - The topic to publish.
          * @param {any} data - the payload to publish to the topic.
          */
         this.publish = function (...args) { return sockets.publish(args); };
         /**
-         * **Subscribe to a topic.**
+         * Subscribe to a topic.
          * @method module:users.pubsub#subscribe
          * @param {String} topic - The topic to subscribe to.
          */
         this.subscribe = function (...args) { return sockets.subscribe(args); };
         /**
-         * **Unsubscribe from a topic.**
+         * Unsubscribe from a topic.
          * @method module:users.pubsub#unsubscribe
          * @param {String} topic - The topic to unsubscribe from.
          */
         this.unsubscribe = function (...args) { return sockets.unsubscribe(args); };
         /**
-         * **Listens for events on subscribed topics.**
          * @method module:users.pubsub#on
          * @param {String} topic - The topic to subscribe to;
          * @param {Function} callBack - The function to call when a subscribed topic is recieved.
