@@ -10,8 +10,7 @@ class ApiUsers extends Api {
         const newUser = user;
         newUser.uid = uniqid();
         newUser.created = new Date(Date.now()).toISOString();
-        return this.api.create('persistance.user', newUser, ownerId)
-            .then(response => this.checkStatus(response));
+        return this.makeRequest('create.user', newUser, ownerId);
     }
 }
 

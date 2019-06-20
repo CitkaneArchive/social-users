@@ -11,9 +11,10 @@
 module.exports = {
     /**
      * @typedef request
-     * @property {Number} status - The response code as to HTTP schema.
      * @property {String} ownerId - The uid of the entity which made the api call;
-     * @property {any} payload - The api response payload.
+     * @property {String} action - The CRUD action to be called;
+     * @property {String} command - The corresponding command invocation for the CRUD operation;
+     * @property {(String|Object[])} args - The arguments to pass to the command.
      */
     request: (ownerId, action, command, args = []) => {
         let thisArgs = args;
@@ -29,12 +30,20 @@ module.exports = {
     /**
      * @typedef response
      * @property {Number} status - The response code as to HTTP schema.
-     * @property {String} ownerId - The uid of the entity which made the api call;
      * @property {any} payload - The api response payload.
      */
     response: (status, payload) => ({
         status,
         payload
+    }),
+    /**
+     * @typedef response-error
+     * @property {Number} status - The response code as to HTTP schema.
+     * @property {any} message - The api response error.
+     */
+    error: (status, message) => ({
+        status,
+        message
     }),
     /**
      * @typedef user
