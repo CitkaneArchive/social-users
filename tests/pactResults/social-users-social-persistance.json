@@ -1,0 +1,101 @@
+{
+  "consumer": {
+    "name": "social-users"
+  },
+  "provider": {
+    "name": "social-persistance"
+  },
+  "messages": [
+    {
+      "description": "a request for a dog",
+      "providerStates": [
+        {
+          "name": "some state",
+          "params": null
+        }
+      ],
+      "contents": {
+        "id": 1,
+        "name": "rover",
+        "type": "bulldog"
+      },
+      "matchingRules": {
+        "body": {
+          "$.id": {
+            "matchers": [
+              {
+                "match": "type"
+              }
+            ]
+          },
+          "$.name": {
+            "matchers": [
+              {
+                "match": "type"
+              }
+            ]
+          },
+          "$.type": {
+            "matchers": [
+              {
+                "match": "regex",
+                "regex": "^(bulldog|sheepdog)$"
+              }
+            ]
+          }
+        }
+      },
+      "metaData": {
+        "content-type": "application/json"
+      }
+    },
+    {
+      "description": "a request to persist a new user",
+      "providerStates": [
+        {
+          "name": "create.user",
+          "params": null
+        }
+      ],
+      "contents": {
+        "id": 1,
+        "name": "rover",
+        "type": "bulldog"
+      },
+      "matchingRules": {
+        "body": {
+          "$.id": {
+            "matchers": [
+              {
+                "match": "type"
+              }
+            ]
+          },
+          "$.name": {
+            "matchers": [
+              {
+                "match": "type"
+              }
+            ]
+          },
+          "$.type": {
+            "matchers": [
+              {
+                "match": "regex",
+                "regex": "^(bulldog|sheepdog)$"
+              }
+            ]
+          }
+        }
+      },
+      "metaData": {
+        "content-type": "application/json"
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "3.0.0"
+    }
+  }
+}
