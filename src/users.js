@@ -45,3 +45,9 @@ const apiInterface = {
 };
 
 sockets.makeResponder(apiInterface);
+
+function gracefulShutdown() {
+    console.log('Gracefully shutting down social-users');
+    process.exit();
+}
+module.exports = { api, gracefulShutdown };

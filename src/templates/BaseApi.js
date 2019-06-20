@@ -23,12 +23,12 @@ const malformedErrorMsg = {
 function makeMessage(ownerId, action, command, args = []) {
     let thisArgs = args;
     if (!Array.isArray(thisArgs)) thisArgs = [thisArgs];
-    return JSON.stringify({
+    return {
         ownerId,
         action,
         command,
         args: thisArgs
-    });
+    };
 }
 
 function GetReqSocket(type) {
@@ -85,6 +85,8 @@ class BaseApi {
             update: (path, args, ownerId = null) => this.builder('update', path, args || [], ownerId),
             delete: (path, args, ownerId = null) => this.builder('delete', path, args || [], ownerId)
         };
+        this.makeMessage = makeMessage;
+
         /** @namespace module:users.pubsub */
         this.sockets = sockets;
         /**

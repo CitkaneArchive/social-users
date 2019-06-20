@@ -5,8 +5,8 @@
   "main": "./src/users.js",
   "scripts": {
     "start": "node ./src/users.js",
-    "test:consumer": "mocha tests/**/*.spec.js",
-    "publishPact": "node ./tests/pact/publish"
+    "test:consumer": "mocha ./tests/consumer/**/*.pact.js",
+    "test:publish": "node ./tests/publishPacts"
   },
   "author": "Michael Jonker",
   "license": "UNLICENSED",

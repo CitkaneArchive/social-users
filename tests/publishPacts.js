@@ -2,10 +2,10 @@
 const config = require('config');
 const pact = require('@pact-foundation/pact-node');
 const path = require('path');
-const { version } = require('../../package.json');
+const { version } = require('../package.json');
 
 const opts = {
-    pactFilesOrDirs: [path.resolve(__dirname, '../pactResults/')],
+    pactFilesOrDirs: [path.join(__dirname, 'pacts')],
     pactBroker: config.get('network').pacts,
     tags: ['prod', 'test'],
     consumerVersion: version
