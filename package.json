@@ -5,8 +5,8 @@
   "main": "./src/users.js",
   "scripts": {
     "start": "node ./src/users.js",
-    "test:consumer": "mocha ./tests/consumer/**/*.pact.js",
-    "test:publish": "node ./tests/publishPacts"
+    "test:consumer": "NODE_ENV=test mocha ./tests/consumer/**/*.pact.js",
+    "test:publish": "NODE_ENV=test node ./tests/publishPacts"
   },
   "author": "Michael Jonker",
   "license": "UNLICENSED",
@@ -19,6 +19,7 @@
     "@pact-foundation/pact": "^8.2.6",
     "chai": "^4.2.0",
     "chai-as-promised": "^7.1.1",
+    "chai-date-string": "^0.1.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.17.3",

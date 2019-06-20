@@ -7,10 +7,9 @@ const { version } = require('../package.json');
 const opts = {
     pactFilesOrDirs: [path.join(__dirname, 'pacts')],
     pactBroker: config.get('network').pacts,
-    tags: ['prod', 'test'],
+    tags: ['prod', version],
     consumerVersion: version
 };
-
 pact
     .publishPacts(opts)
     .then(() => {
