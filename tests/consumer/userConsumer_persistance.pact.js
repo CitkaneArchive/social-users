@@ -27,9 +27,7 @@ describe('social-users consumer', () => {
     });
 
     after(() => {
-        setTimeout(() => {
-            gracefulShutdown();
-        }, 1000);
+        gracefulShutdown();
     });
 
     it('is running in test environment', () => {

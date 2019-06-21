@@ -4,9 +4,10 @@ const pact = require('@pact-foundation/pact-node');
 const path = require('path');
 const { version } = require('../package.json');
 
+const pacts = config.get('pacts');
 const opts = {
     pactFilesOrDirs: [path.join(__dirname, 'pacts')],
-    pactBroker: config.get('network').pacts,
+    pactBroker: `${pacts.broker}:${pacts.brokerPort}`,
     tags: ['prod', version],
     consumerVersion: version
 };
