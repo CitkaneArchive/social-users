@@ -5,6 +5,7 @@
 const LOG_LEVEL = process.env.LOG_LEVEL || 'WARN';
 const { MessageConsumerPact, synchronousBodyHandler } = require('@pact-foundation/pact');
 const path = require('path');
+const fs = require('fs-extra');
 const chai = require('chai');
 const dateString = require('chai-date-string');
 const { apiInterface, api, gracefulShutdown } = require('../../src/users');
@@ -16,10 +17,10 @@ const pactsDir = path.join(__dirname, '../pacts');
 describe('social-users consumer', () => {
     let messagePact;
     before(() => {
+        fs.removeSync(path.join(pactsDir, 'social-users-social-persistance.json'));
         messagePact = new MessageConsumerPact({
             consumer: 'social-users',
             provider: 'social-persistance',
-            pactfileWriteMode: 'update',
             dir: pactsDir,
             logLevel: LOG_LEVEL,
             spec: 2
@@ -27,7 +28,7 @@ describe('social-users consumer', () => {
     });
 
     after(() => {
-        gracefulShutdown();
+        setTimeout(() => { gracefulShutdown(); });
     });
 
     it('is running in test environment', () => {
@@ -48,8 +49,8 @@ describe('social-users consumer', () => {
         expect(topic).to.equal('bff.makesubscriptions');
         expect(topics.length).to.equal(3);
     });
-    describe('create.user', () => {
-        it('creates a new user object', async () => {
+    describe('saves a new user to persistant storage', () => {
+        it('create.user', async () => {
             function handler(response) {
                 expect(response.status).to.equal(201);
                 expect(response.payload).to.be.an('object');
@@ -83,19 +84,6 @@ describe('social-users consumer', () => {
                 .withContent(expectedResponse)
                 .withMetadata({ 'content-type': 'application/json' })
                 .verify(synchronousBodyHandler(handler));
-        });
-
-        it('publishes the new user to the \'users.user-created\' event', () => {
-            let lastMessage;
-            try {
-                [lastMessage] = api.sockets.publisher._outgoing.lastBatch.content;
-                [lastMessage] = JSON.parse(lastMessage.toString());
-            } catch (err) {
-                throw err;
-            }
-            expect(lastMessage[0]).to.equal('users.user-created');
-            expect(lastMessage[1]).to.be.an('object');
-            expect(lastMessage[1].userName).to.equal('testuser');
         });
     });
 });
