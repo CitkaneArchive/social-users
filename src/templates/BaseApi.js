@@ -1,3 +1,4 @@
+/* eslint-disable object-shorthand */
 /**
  * The microservice API provides a common pattern to perform async functions across the domain.
  *
@@ -8,6 +9,11 @@
  * For common message envelope standards, please refer to:
  * {@link request}, {@link response}, {@link response-error}
  * @module api
+ * @example
+ * const Sockets = require('./templates/Sockets');
+ * const BaseApi = require('./templates/BaseApi');
+ * const sockets = new Sockets({@link serviceShortname});
+ * const { api } = new BaseApi(sockets);
  * */
 /** @namespace module:api.api/utils */
 /* eslint-disable prefer-promise-reject-errors */
@@ -177,74 +183,74 @@ class BaseApi {
              * api.delete('service.function', ['foo', { bar: true }], {@link ownerId})
              *  .then((response) => {...})
              * */
-            delete: (path, args, ownerId = null) => this.builder('delete', path, args || [], ownerId)
+            delete: (path, args, ownerId = null) => this.builder('delete', path, args || [], ownerId),
+            /**
+             * **Publish to a topic.**
+             * @method module:api#publish
+             * @param {String} topic - The topic to publish.
+             * @param {any} [payload] - the payload to publish to the topic.
+             * @example
+             * api.publish('myTopic', <any data>);
+             */
+            publish: function (...args) { sockets.publish(...args); },
+            /**
+             * **Subsribe to a topic.**
+             * @method module:api#on
+             * @param {String} topic - The topic to subscribe to;
+             * @param {Sockets~eventCallback} callBack - The function to call when a subscribed topic is received.
+             * @example
+             * api.on('myTopic', (data) => {...});
+             */
+            on: function (...args) { sockets.on(...args); },
+            /**
+             * **Unsubscribe from a topic.**
+             * @method module:api#off
+             * @param {String} topic - The topic to unsubscribe from.
+             * @example
+             * api.off('myTopic');
+             */
+            off: function (...args) { sockets.off(...args); },
+            /**
+             * @method module:api.api/utils#getReqSocket
+             * @param {serviceShortname} type
+             * @returns {module:api.api/utils.GetReqSocket} An instance of a request socket.
+             */
+            getReqSocket: function (type) {
+                if (!type) return GetReqSocket;
+                return new GetReqSocket(type);
+            },
+
+            /**
+             * returns a {@link response-error} to a calling api.
+             * @method module:api.api/utils#reject
+             * @param {number} status - An http status code
+             * @param {string} [message] - the message to include in the response
+             * @returns {Promise} A promise rejection with a {@link response-error}.
+             * @example
+             * if (!thingFound) return api.reject(404, 'thing was not found');
+             */
+            reject: (status, message = 'error') => {
+                if (!status || typeof status !== 'number') return Promise.reject(malformedErrorMsg);
+                return Promise.reject({ status, message });
+            },
+
+            /**
+             * returns a {@link response} to a calling api.
+             * @method module:api.api/utils#resolve
+             * @param {number} status - An http status code
+             * @param {any} [payload] - the payload to include in the response
+             * @returns {Promise} A promise resolver with a {@link response}.
+             * @example
+             * if (cache['theThing']) return api.resolve(200, cache['theThing']);
+             */
+            resolve: (status, payload = false) => {
+                if (!status || typeof status !== 'number') return this.api.reject();
+                return Promise.resolve({ status, payload });
+            },
+            makeRequestObject
         };
-        /**
-         * **Publish to a topic.**
-         * @method module:api#publish
-         * @param {String} topic - The topic to publish.
-         * @param {any} [payload] - the payload to publish to the topic.
-         * @example
-         * api.publish('myTopic', <any data>);
-         */
-        this.publish = function (...args) { sockets.publish(...args); };
-        /**
-         * **Subsribe to a topic.**
-         * @method module:api#on
-         * @param {String} topic - The topic to subscribe to;
-         * @param {Sockets~eventCallback} callBack - The function to call when a subscribed topic is received.
-         * @example
-         * api.on('myTopic', (data) => {...});
-         */
-        this.on = function (...args) { sockets.on(...args); };
-        /**
-         * **Unsubscribe from a topic.**
-         * @method module:api#off
-         * @param {String} topic - The topic to unsubscribe from.
-         * @example
-         * api.off('myTopic');
-         */
-        this.off = function (...args) { sockets.off(...args); };
-        this.makeRequestObject = makeRequestObject;
+
         this.sockets = sockets;
-    }
-
-    /**
-     * @method module:api.api/utils#getReqSocket
-     * @param {serviceShortname} type
-     * @returns {module:api.api/utils.GetReqSocket} An instance of a request socket.
-     */
-    getReqSocket(type) {
-        if (!type) return GetReqSocket;
-        return new GetReqSocket(type);
-    }
-
-    /**
-     * returns a {@link response-error} to a calling api.
-     * @method module:api.api/utils#reject
-     * @param {number} status - An http status code
-     * @param {string} [message] - the message to include in the response
-     * @returns {Promise} A promise rejection with a {@link response-error}.
-     * @example
-     * if (!thingFound) return api.reject(404, 'thing was not found');
-     */
-    reject(status, message = 'error') {
-        if (!status || typeof status !== 'number') return Promise.reject(malformedErrorMsg);
-        return Promise.reject({ status, message });
-    }
-
-    /**
-     * returns a {@link response} to a calling api.
-     * @method module:api.api/utils#resolve
-     * @param {number} status - An http status code
-     * @param {any} [payload] - the payload to include in the response
-     * @returns {Promise} A promise resolver with a {@link response}.
-     * @example
-     * if (cache['theThing']) return api.resolve(200, cache['theThing']);
-     */
-    resolve(status, payload = false) {
-        if (!status || typeof status !== 'number') return this.reject();
-        return Promise.resolve({ status, payload });
     }
 }
 

@@ -1,10 +1,13 @@
 /** @module users */
 
 const Sockets = require('./templates/Sockets');
+const BaseApi = require('./templates/BaseApi');
 const ApiUsers = require('./api/ApiUsers');
 
+
 const sockets = new Sockets('users');
-const api = new ApiUsers(sockets);
+const { api } = new BaseApi(sockets);
+const users = new ApiUsers(sockets, api);
 const bffSubscriptions = [
     'users.user-updated',
     'users.user-created',
@@ -18,7 +21,7 @@ api.publish('bff.makesubscriptions', bffSubscriptions);
  * */
 const apiInterface = {
     create: {
-        user: request => api.createNewUser(request.args[0], request.ownerId)
+        user: request => users.createNewUser(request.args[0], request.ownerId)
             .then(proxyRequest => api.getReqSocket('persistance').proxy(proxyRequest))
             .then((response) => {
                 if (response.payload) api.publish('users.user-created', response.payload);
@@ -56,4 +59,9 @@ function gracefulShutdown() {
     console.log('Gracefully shutting down social-users');
     process.exit();
 }
-module.exports = { apiInterface, api, gracefulShutdown };
+module.exports = {
+    apiInterface,
+    api,
+    sockets,
+    gracefulShutdown
+};
