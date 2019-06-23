@@ -1,3 +1,5 @@
+/** @module users */
+
 const Sockets = require('./templates/Sockets');
 const ApiUsers = require('./api/ApiUsers');
 
@@ -8,8 +10,12 @@ const bffSubscriptions = [
     'users.user-created',
     'users.user-deleted'
 ];
-sockets.publish('bff.makesubscriptions', bffSubscriptions);
+api.publish('bff.makesubscriptions', bffSubscriptions);
 
+/**
+ * **The public interface to the Api**
+ * @memberof module:users
+ * */
 const apiInterface = {
     create: {
         user: request => api.createNewUser(request.args[0], request.ownerId)
@@ -31,14 +37,14 @@ const apiInterface = {
     update: {
         user: request => api.getReqSocket('persistance').proxy(request)
             .then((response) => {
-                if (response.payload) api.sockets.publish('users.user-updated', response.payload);
+                if (response.payload) api.publish('users.user-updated', response.payload);
                 return response;
             })
     },
     delete: {
         user: request => api.getReqSocket('persistance').proxy(request)
             .then((response) => {
-                if (response.payload) api.sockets.publish('users.user-deleted', response.payload);
+                if (response.payload) api.publish('users.user-deleted', response.payload);
                 return response;
             })
     }

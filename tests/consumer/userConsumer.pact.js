@@ -65,7 +65,7 @@ describe('social-users consumer', () => {
                 expect(response.payload.uid).to.not.be.empty;
                 expect(response.payload.created).to.be.a.dateString();
             }
-            let request = await api.makeRequest('create.user', {
+            let request = await api.makeRequestObject('create.user', {
                 userName: 'testuser',
                 realName: 'Test User',
                 about: 'About the test user'

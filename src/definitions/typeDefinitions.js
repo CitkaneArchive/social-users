@@ -8,13 +8,44 @@
  *
 */
 
+/**
+ * The path identifier for an api call.
+ *
+ * Must be of the format: **shortname_of_the_service**.**function_to_call**.
+ * @typedef {String}  apiPath
+ *
+ * @example 'accounts.contract'
+ */
+
+/**
+ * The function identifier for a request.
+ *
+ * Must be of the format: **crud_operation**.**function_to_call**.
+ * @typedef {String}  reqPath
+ *
+ * @example 'create.contract'
+ */
+
+/**
+  * The unique shortname of the microservice. Consult the 'config' files at module root.
+  * @typedef {String} serviceShortname
+  */
+
+
 module.exports = {
     /**
      * @typedef request
-     * @property {String} ownerId - The uid of the entity which made the api call;
+     * @property {ownerId} ownerId - The uid of the entity which made the api call;
      * @property {String} action - The CRUD action to be called;
      * @property {String} command - The corresponding command invocation for the CRUD operation;
      * @property {(String|Object[])} args - The arguments to pass to the command.
+     * @example
+     * {
+     *  action: 'create',
+     *  command: 'user',
+     *  args: ['arg1', {...}, [...]],
+     *  ownerId: 'uid12345'
+     * }
      */
     request: (ownerId, action, command, args = []) => {
         let thisArgs = args;
@@ -31,6 +62,11 @@ module.exports = {
      * @typedef response
      * @property {Number} status - The response code as to HTTP schema.
      * @property {any} payload - The api response payload.
+     * @example
+     * {
+     *  status: 200,
+     *  payload: {...}
+     * }
      */
     response: (status, payload) => ({
         status,
@@ -40,24 +76,14 @@ module.exports = {
      * @typedef response-error
      * @property {Number} status - The response code as to HTTP schema.
      * @property {any} message - The api response error.
+     * @example
+     * {
+     *  status: 404,
+     *  message: 'not found'
+     * }
      */
     error: (status, message) => ({
         status,
         message
-    }),
-    /**
-     * @typedef user
-     * @property {String} userName -A unique user name.
-     * @property {String} [realName] -The user's real name.
-     * @property {String} [about] -About text for the user.
-     * @property {String} created -The ISO date string of when the user was created.
-     * @property {String} uid -The unique id for the user.
-     */
-    user: (userName, realName = '', about = '', created, uid) => ({
-        userName,
-        realName,
-        about,
-        created,
-        uid
     })
 };
