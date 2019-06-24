@@ -85,7 +85,7 @@ describe('social-users consumer expectations', async () => {
                 };
             });
             /*
-            it('publishes the new user to the \'users.user-created\' event', () => {
+            it('publishes the new user to the \'users/user-created\' event', () => {
                 let lastMessage;
                 try {
                     [lastMessage] = api.sockets.publisher._outgoing.lastBatch.content;
@@ -93,7 +93,7 @@ describe('social-users consumer expectations', async () => {
                 } catch (err) {
                     throw err;
                 }
-                expect(lastMessage[0]).to.equal('users.user-created');
+                expect(lastMessage[0]).to.equal('users/user-created');
                 expect(lastMessage[1]).to.be.an('object');
                 expect(lastMessage[1].userName).to.equal('testuser');
             });

@@ -1,6 +1,6 @@
 module.exports = {
     /**
-     * @typedef module:users~user
+     * @typedef user
      * @property {String} userName -A unique user name.
      * @property {String} [realName] -The user's real name.
      * @property {String} [about] -About text for the user.
@@ -15,3 +15,8 @@ module.exports = {
         uid
     })
 };
+
+/**
+ * @typedef module:users~users
+ * @property {user} uid - an object of {@link user}s indexed by their uid.
+ */
