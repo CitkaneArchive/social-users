@@ -1,6 +1,5 @@
 {
     "network": {
-        "pacts": "PACTS_LOCATION",
         "pubsub": {
             "host": "PUBSUB_HOST",
             "port": "PUBSUB_PORT"
@@ -19,12 +18,6 @@
             "crud": "USERS_CRUDPORT",
             "publish": "USERS_PUBLISHPORT"
         },
-        "images": {
-            "host": "IMAGES_HOST",
-            "static": "IMAGES_STATICPORT",
-            "crud": "IMAGES_CRUDPORT",
-            "publish": "IMAGES_PUBLISHPORT"
-        },
         "activities": {
             "host": "ACTIVITIES_HOST",
             "crud": "ACTIVITIES_CRUDPORT",
@@ -35,5 +28,9 @@
             "crud": "VOTING_CRUDPORT",
             "publish": "VOTING_PUBLISHPORT"
         }
-    }
+    },
+	"pacts": {
+		"host": "PACTS_HOST",
+		"port": "PACTS_PORT"
+	}
 }

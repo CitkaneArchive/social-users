@@ -5,19 +5,27 @@
   "main": "./src/users.js",
   "scripts": {
     "start": "node ./src/users.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test:consumer": "NODE_ENV=test mocha ./tests/consumer/**/*.pact.js",
+    "test:provider": "NODE_ENV=test mocha ./tests/provider/**/*.pact.js",
+    "test:publish": "NODE_ENV=test node ./tests/publishPacts"
   },
   "author": "Michael Jonker",
   "license": "UNLICENSED",
   "dependencies": {
-    "@social/social-deployment": "git+https://git@github.com/citkane/social-deployment.git",
     "config": "^3.1.0",
     "uniqid": "^5.0.3",
     "zeromq": "^5.1.0"
   },
   "devDependencies": {
+    "@pact-foundation/pact": "^8.2.6",
+    "axios": "^0.19.0",
+    "chai": "^4.2.0",
+    "chai-as-promised": "^7.1.1",
+    "chai-date-string": "^0.1.0",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.17.3"
+    "eslint-plugin-import": "^2.17.3",
+    "eslint-plugin-mocha": "^5.3.0",
+    "mocha": "^6.1.4"
   }
 }

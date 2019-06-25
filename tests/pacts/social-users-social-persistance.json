@@ -1,0 +1,54 @@
+{
+  "consumer": {
+    "name": "social-users"
+  },
+  "provider": {
+    "name": "social-persistance"
+  },
+  "messages": [
+    {
+      "description": "persistance.create.user",
+      "providerStates": [
+        {
+          "name": {
+            "ownerId": "test-social-users",
+            "action": "create",
+            "command": "user",
+            "args": [
+              {
+                "userName": "testuser",
+                "realName": "Test User",
+                "about": "About the test user",
+                "uid": "fvsue2gpjxcdmnff",
+                "created": "2019-06-25T22:23:40.826Z"
+              }
+            ]
+          },
+          "params": null
+        }
+      ],
+      "contents": {
+        "status": 201,
+        "payload": {
+          "userName": "testuser",
+          "realName": "Test User",
+          "about": "About the test user",
+          "uid": "fvsue2gpjxcdmnff",
+          "created": "2019-06-25T22:23:40.826Z"
+        }
+      },
+      "matchingRules": {
+        "body": {
+        }
+      },
+      "metaData": {
+        "content-type": "application/json"
+      }
+    }
+  ],
+  "metadata": {
+    "pactSpecification": {
+      "version": "3.0.0"
+    }
+  }
+}
